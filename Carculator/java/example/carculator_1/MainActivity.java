@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     // 숫자 입력 버튼
     Button btnNum[] = new Button[10];
     // C (초기화)버튼, plus(더하기) 버튼, enter(연산실행) 버튼
-    Button c, plus, enter;
+    Button c, plus, enter, minus , multi, divide;
     //num배열 변수 - index, 연산판단 변수 - operation 0:연산없음, 1:plus, 연산결과 - result
     int index=0, operation = 0, result = 0;
     @Override
@@ -35,10 +35,13 @@ public class MainActivity extends AppCompatActivity {
         }
         // C(초기화) 버튼 매칭
         c = (Button) findViewById(R.id.C);
-        // plus(더하기) 버튼 매칭
         plus = (Button) findViewById(R.id.plus);
+        minus = (Button) findViewById(R.id.minus);
+        multi = (Button) findViewById(R.id.multi);
+        divide = (Button) findViewById(R.id.divide);
         // enter(연산결과) 버튼 매칭
         enter = (Button) findViewById(R.id.enter);
+
 
         // 0~9 까지의 숫자 입력
         for(int i=0;i<btn.length;i++) {
@@ -49,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     num[index] += number[tmp];
                     edit1.setText(num[index]);
-                    oper(operation);
                  }
             });
         }
@@ -77,22 +79,73 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                index++;
+                // 연산 판단 변수를 2(minus)로 지정
+                operation = 2;
+            }
+        });
+
+        multi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                index++;
+                // 연산 판단 변수를 3(multiplication)으로 설정
+                operation = 3;
+            }
+        });
+
+        divide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                index++;
+                operation = 4;
+            }
+        });
+
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                oper(operation);
                 edit1.setText(result + "");
                 result = 0;
             }
         });
+
     }
     void oper(int operation) {
-        if(operation == 0) {}
-        // 더하기
-        else if(operation == 1) {
-            if(result>0)
-                result = result + Integer.parseInt(num[index]);
-            else
-                result = Integer.parseInt(num[index-1]) + Integer.parseInt(num[index]);
+        switch (operation) {
+            case 0: break;
+            case 1: {
+                if(result>0)
+                    result = result + Integer.parseInt(num[index]);
+                else
+                    result = Integer.parseInt(num[index-1]) + Integer.parseInt(num[index]);
+                break;
+            }
+            case 2: {
+                if (result>0)
+                    result = result - Integer.parseInt(num[index]);
+                else
+                    result = Integer.parseInt(num[index-1]) - Integer.parseInt(num[index]);
+                break;
+            }
+            case 3: {
+                if (result>0)
+                    result = result * Integer.parseInt(num[index]);
+                else
+                    result = Integer.parseInt(num[index-1]) * Integer.parseInt(num[index]);
+                break;
+            }
+            case 4: {
+                if (result>0)
+                    result = result / Integer.parseInt(num[index]);
+                else
+                    result = Integer.parseInt(num[index-1]) / Integer.parseInt(num[index]);
+                break;
+            }
         }
     }
 }
